@@ -1,6 +1,7 @@
 package com.crossover.trial.weather.endpoint;
 
-import com.crossover.trial.weather.service.AirportDataService;
+import com.crossover.trial.weather.service.AirportService;
+import com.crossover.trial.weather.service.WeatherService;
 import com.google.gson.Gson;
 
 import javax.ws.rs.Path;
@@ -19,7 +20,9 @@ public class RestWeatherQueryEndpoint implements WeatherQueryEndpoint {
 
     public final static Logger LOGGER = Logger.getLogger("WeatherQuery");
 
-    private AirportDataService airportDataService = AirportDataService.getInstance();
+    private AirportService airportDataService = AirportService.getInstance();
+
+    private WeatherService weatherService = WeatherService.getInstance();
 
     /** shared gson json to object factory */
     public static final Gson gson = new Gson();
@@ -32,7 +35,7 @@ public class RestWeatherQueryEndpoint implements WeatherQueryEndpoint {
     @Override
     public String ping() {
         Map<String, Object> retval = new HashMap<>();
-        retval.put("datasize", airportDataService.getDataSize());
+        retval.put("datasize", weatherService.getDataSize());
         retval.put("iata_freq", airportDataService.getFrequencyMap());
         retval.put("radius_freq", airportDataService.getRadiusFrequency());
 

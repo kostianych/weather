@@ -6,7 +6,8 @@ import com.crossover.trial.weather.endpoint.RestWeatherCollectorEndpoint;
 import com.crossover.trial.weather.endpoint.RestWeatherQueryEndpoint;
 import com.crossover.trial.weather.endpoint.WeatherCollectorEndpoint;
 import com.crossover.trial.weather.endpoint.WeatherQueryEndpoint;
-import com.crossover.trial.weather.service.AirportDataService;
+import com.crossover.trial.weather.service.AirportService;
+import com.crossover.trial.weather.service.WeatherService;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -23,14 +24,19 @@ public class WeatherEndpointTest {
 
     private WeatherCollectorEndpoint _update = new RestWeatherCollectorEndpoint();
 
-    private AirportDataService airportDataService = AirportDataService.getInstance();
+    private AirportService airportDataService = AirportService.getInstance();
+
+    private WeatherService weatherService = WeatherService.getInstance();
+
 
     private Gson _gson = new Gson();
 
     private DataPoint _dp;
     @Before
     public void setUp() throws Exception {
+        weatherService.init();
         airportDataService.init();
+
         _dp = new DataPoint.Builder()
                 .withCount(10).withFirst(10).withMedian(20).withLast(30).withMean(22).build();
         _update.updateWeather("BOS", "wind", _gson.toJson(_dp));

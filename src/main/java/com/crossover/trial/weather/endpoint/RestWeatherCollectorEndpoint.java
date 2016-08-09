@@ -1,9 +1,10 @@
 package com.crossover.trial.weather.endpoint;
 
-import com.crossover.trial.weather.service.AirportDataService;
+import com.crossover.trial.weather.service.AirportService;
 import com.crossover.trial.weather.exception.WeatherException;
 import com.crossover.trial.weather.data.AirportData;
 import com.crossover.trial.weather.data.DataPoint;
+import com.crossover.trial.weather.service.WeatherService;
 import com.google.gson.Gson;
 
 import javax.ws.rs.Path;
@@ -24,7 +25,10 @@ import java.util.logging.Logger;
 public class RestWeatherCollectorEndpoint implements WeatherCollectorEndpoint {
     public final static Logger LOGGER = Logger.getLogger(RestWeatherCollectorEndpoint.class.getName());
 
-    private AirportDataService airportDataService = AirportDataService.getInstance();
+    private AirportService airportDataService = AirportService.getInstance();
+
+    private WeatherService weatherService = WeatherService.getInstance();
+
 
     /** shared gson json to object factory */
     public final static Gson gson = new Gson();
@@ -39,7 +43,7 @@ public class RestWeatherCollectorEndpoint implements WeatherCollectorEndpoint {
                                   @PathParam("pointType") String pointType,
                                   String datapointJson) {
         try {
-            airportDataService.addDataPoint(iataCode, pointType, gson.fromJson(datapointJson, DataPoint.class));
+            weatherService.addDataPoint(iataCode, pointType, gson.fromJson(datapointJson, DataPoint.class));
         } catch (WeatherException e) {
             e.printStackTrace();
         }
@@ -55,7 +59,7 @@ public class RestWeatherCollectorEndpoint implements WeatherCollectorEndpoint {
 
     @Override
     public Response getAirport(@PathParam("iata") String iata) {
-        AirportData ad = airportDataService.findAirportData(iata);
+        AirportData ad = airportDataService.getAirportData(iata);
         return Response.status(Response.Status.OK).entity(ad).build();
     }
 
