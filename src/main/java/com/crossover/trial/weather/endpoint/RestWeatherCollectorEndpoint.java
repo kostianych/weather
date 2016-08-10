@@ -6,9 +6,7 @@ import com.crossover.trial.weather.data.AirportData;
 import com.crossover.trial.weather.data.DataPoint;
 import com.crossover.trial.weather.service.WeatherService;
 import com.google.gson.Gson;
-
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.logging.Logger;
 
@@ -63,10 +61,11 @@ public class RestWeatherCollectorEndpoint implements WeatherCollectorEndpoint {
 
 
     @Override
+    @Path("/airport/{iata}/{lat}/{long}")
     public Response addAirport(@PathParam("iata") String iata,
                                @PathParam("lat") String latString,
                                @PathParam("long") String longString) {
-        airportDataService.addAirport(iata, Double.valueOf(latString), Double.valueOf(longString));
+        airportDataService.addAirport(iata.replaceAll("\"", ""), Double.valueOf(latString), Double.valueOf(longString));
         return Response.status(Response.Status.OK).build();
     }
 
@@ -81,8 +80,5 @@ public class RestWeatherCollectorEndpoint implements WeatherCollectorEndpoint {
         System.exit(0);
         return Response.noContent().build();
     }
-    //
-    // Internal support methods
-    //
 
 }

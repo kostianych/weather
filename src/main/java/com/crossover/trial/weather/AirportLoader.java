@@ -33,7 +33,7 @@ public class AirportLoader {
         String l;
         while ((l = reader.readLine()) != null) {
             String[] row = l.split(",");
-            collect.path("airport").path(row[4]).path(row[6]).path(row[7]).request(MediaType.APPLICATION_JSON).post(Entity.json("{}"));
+            collect.path("airport").path(row[4]).path(row[6]).path(row[7]).request(MediaType.APPLICATION_JSON).post(Entity.text(""));
         }
         airportDataStream.close();
     }

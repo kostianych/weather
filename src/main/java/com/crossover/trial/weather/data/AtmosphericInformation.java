@@ -68,4 +68,13 @@ public class AtmosphericInformation {
     public void setLastUpdateTime(long lastUpdateTime) {
         this.lastUpdateTime = lastUpdateTime;
     }
+
+    public boolean hasNotNullField() {
+        return getCloudCover() != null
+                || getHumidity() != null
+                || getPressure() != null
+                || getPrecipitation() != null
+                || getTemperature() != null
+                || getWind() != null;
+    }
 }

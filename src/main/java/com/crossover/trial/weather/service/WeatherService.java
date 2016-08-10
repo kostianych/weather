@@ -65,57 +65,9 @@ public class WeatherService {
      * @param dp the actual data point
      */
     private void updateAtmosphericInformation(AtmosphericInformation ai, String pointType, DataPoint dp) throws WeatherException {
-        final DataPointType dptype = DataPointType.valueOf(pointType.toUpperCase());
-
-        if (pointType.equalsIgnoreCase(DataPointType.WIND.name())) {
-            if (dp.getMean() >= 0) {
-                ai.setWind(dp);
-                ai.setLastUpdateTime(System.currentTimeMillis());
-                return;
-            }
-        }
-
-        if (pointType.equalsIgnoreCase(DataPointType.TEMPERATURE.name())) {
-            if (dp.getMean() >= -50 && dp.getMean() < 100) {
-                ai.setTemperature(dp);
-                ai.setLastUpdateTime(System.currentTimeMillis());
-                return;
-            }
-        }
-
-        if (pointType.equalsIgnoreCase(DataPointType.HUMIDTY.name())) {
-            if (dp.getMean() >= 0 && dp.getMean() < 100) {
-                ai.setHumidity(dp);
-                ai.setLastUpdateTime(System.currentTimeMillis());
-                return;
-            }
-        }
-
-        if (pointType.equalsIgnoreCase(DataPointType.PRESSURE.name())) {
-            if (dp.getMean() >= 650 && dp.getMean() < 800) {
-                ai.setPressure(dp);
-                ai.setLastUpdateTime(System.currentTimeMillis());
-                return;
-            }
-        }
-
-        if (pointType.equalsIgnoreCase(DataPointType.CLOUDCOVER.name())) {
-            if (dp.getMean() >= 0 && dp.getMean() < 100) {
-                ai.setCloudCover(dp);
-                ai.setLastUpdateTime(System.currentTimeMillis());
-                return;
-            }
-        }
-
-        if (pointType.equalsIgnoreCase(DataPointType.PRECIPITATION.name())) {
-            if (dp.getMean() >=0 && dp.getMean() < 100) {
-                ai.setPrecipitation(dp);
-                ai.setLastUpdateTime(System.currentTimeMillis());
-                return;
-            }
-        }
-
-        throw new IllegalStateException("couldn't update atmospheric data");
+        final DataPointType dpType = DataPointType.valueOf(pointType.toUpperCase());
+        AtmosphericInformationUpdateStrategy updateStrategy = AtmosphericInformationUpdateStrategy.createUpdateStrategy(dpType);
+        updateStrategy.update(ai, dp);
     }
 
     // TODO: name correctly
@@ -123,24 +75,12 @@ public class WeatherService {
         int datasize = 0;
         for (AtmosphericInformation ai : atmosphericInformation.values()) {
             // we only count recent readings
-            if (ai.getCloudCover() != null
-                    || ai.getHumidity() != null
-                    || ai.getPressure() != null
-                    || ai.getPrecipitation() != null
-                    || ai.getTemperature() != null
-                    || ai.getWind() != null) {
-                // updated in the last day
-                if (ai.getLastUpdateTime() > System.currentTimeMillis() - 86400000) {
-                    datasize++;
-                }
+            // updated in the last day
+            if (ai.hasNotNullField() && ai.getLastUpdateTime() > System.currentTimeMillis() - 86400000) {
+                datasize++;
             }
         }
         return datasize;
     }
-
-
-
-
-
 
 }

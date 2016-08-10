@@ -92,27 +92,27 @@ public class DataPoint {
         public Builder() { }
 
         public Builder withFirst(int first) {
-            first = first;
+            this.first = first;
             return this;
         }
 
         public Builder withMean(int mean) {
-            mean = mean;
+            this.mean = mean;
             return this;
         }
 
         public Builder withMedian(int median) {
-            median = median;
+            this.median = median;
             return this;
         }
 
         public Builder withCount(int count) {
-            count = count;
+            this.count = count;
             return this;
         }
 
         public Builder withLast(int last) {
-            last = last;
+            this.last = last;
             return this;
         }
 

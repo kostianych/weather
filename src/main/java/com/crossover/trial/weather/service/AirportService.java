@@ -3,6 +3,7 @@ package com.crossover.trial.weather.service;
 import com.crossover.trial.weather.data.AirportData;
 import com.crossover.trial.weather.data.AtmosphericInformation;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by const on 8/8/16.
@@ -35,7 +36,6 @@ public class AirportService {
     }
 
     private AirportService() {
-        //init();
     }
 
     public static AirportService getInstance() {
@@ -57,10 +57,7 @@ public class AirportService {
     }
 
     public Set<String> getAirportsIata() {
-        Set<String> retval = new HashSet<>();
-        for (String iata : airportDataMap.keySet()) {
-            retval.add(iata);
-        }
+        Set<String> retval = airportDataMap.keySet().stream().collect(Collectors.toSet());
         return retval;
     }
 
@@ -147,8 +144,7 @@ public class AirportService {
             AirportData ad = airportDataMap.get(iata);
             airportDataMap.values().stream().filter(airportData -> calculateDistance(ad, airportData) <= radius).forEach(airportData -> {
                 AtmosphericInformation ai = weatherService.getAtmosphericInformation(airportData.getIata());
-                if (ai.getCloudCover() != null || ai.getHumidity() != null || ai.getPrecipitation() != null
-                        || ai.getPressure() != null || ai.getTemperature() != null || ai.getWind() != null) {
+                if (ai.hasNotNullField()) {
                     result.add(ai);
                 }
             });
