@@ -12,8 +12,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 import java.util.logging.Logger;
 
-//import static com.crossover.trial.weather.endpoint.RestWeatherQueryEndpoint.*;
-
 /**
  * A REST implementation of the WeatherCollector API. Accessible only to airport weather collection
  * sites via secure VPN.

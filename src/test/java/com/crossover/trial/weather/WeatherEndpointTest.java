@@ -34,7 +34,7 @@ public class WeatherEndpointTest {
     private DataPoint _dp;
     @Before
     public void setUp() throws Exception {
-        weatherService.init();
+        weatherService.clear();
         airportDataService.init();
 
         _dp = new DataPoint.Builder()

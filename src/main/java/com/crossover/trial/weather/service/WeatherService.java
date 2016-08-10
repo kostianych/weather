@@ -6,9 +6,7 @@ import com.crossover.trial.weather.data.DataPointType;
 import com.crossover.trial.weather.exception.WeatherException;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * Created by const on 8/10/16.
@@ -22,7 +20,6 @@ public class WeatherService {
 
     static {
         instance = new WeatherService();
-        init();
     }
 
     private WeatherService() {
@@ -33,9 +30,8 @@ public class WeatherService {
         return instance;
     }
 
-    public static void init() {
+    public void clear() {
         atmosphericInformation.clear();
-
     }
 
     public AtmosphericInformation getAtmosphericInformation(String iataCode) {
@@ -60,8 +56,6 @@ public class WeatherService {
         AtmosphericInformation ai = getAtmosphericInformation(iataCode);
         updateAtmosphericInformation(ai, pointType, dp);
     }
-
-
 
     /**
      * update atmospheric information with the given data point for the given point type

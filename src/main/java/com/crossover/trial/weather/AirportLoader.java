@@ -2,7 +2,9 @@ package com.crossover.trial.weather;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 import java.io.*;
 
 /**
@@ -22,16 +24,18 @@ public class AirportLoader {
 
     public AirportLoader() {
         Client client = ClientBuilder.newClient();
-        query = client.target("http://localhost:8080/query");
-        collect = client.target("http://localhost:8080/collect");
+        query = client.target("http://localhost:9090/query");
+        collect = client.target("http://localhost:9090/collect");
     }
 
     public void upload(InputStream airportDataStream) throws IOException{
         BufferedReader reader = new BufferedReader(new InputStreamReader(airportDataStream));
-        String l = null;
+        String l;
         while ((l = reader.readLine()) != null) {
-            break;
+            String[] row = l.split(",");
+            collect.path("airport").path(row[4]).path(row[6]).path(row[7]).request(MediaType.APPLICATION_JSON).post(Entity.json("{}"));
         }
+        airportDataStream.close();
     }
 
     public static void main(String args[]) throws IOException{

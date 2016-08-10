@@ -1,9 +1,9 @@
 6. Service refactoring - if to polymorphism
-5. Service split on 2
-8. Implement new calls
+5. Split service on 2
+8. Implement new calls and loader
 9. Calculate storage for 1000 airports
 2. Use LOGGERS inside services
-4. Exception hadling in one place, response ERROR on exception
+4. Exception handling in one place, response ERROR on exception
 7. Check private fields inside data classes
 
 +3. Rid off static import

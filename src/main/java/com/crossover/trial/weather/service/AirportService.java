@@ -35,7 +35,7 @@ public class AirportService {
     }
 
     private AirportService() {
-        init();
+        //init();
     }
 
     public static AirportService getInstance() {
